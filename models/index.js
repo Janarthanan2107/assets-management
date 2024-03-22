@@ -10,11 +10,11 @@ const db = {};
 const { DB_USERNAME, DB_PASSWORD, DB_DATABASE, DB_HOST, DB_PORT, DB_DIALECT } =
   process.env;
 
-console.log("DB_DATABASE", DB_DATABASE, DB_USERNAME, DB_PASSWORD, DB_HOST, DB_PORT, DB_DIALECT);
-console.log(process.env.DB_DATABASE);
-let sequelize ;
+// console.log("DB_DATABASE", DB_DATABASE, DB_USERNAME, DB_PASSWORD, DB_HOST, DB_PORT, DB_DIALECT);
+// console.log(process.env.DB_DATABASE);
+let sequelize;
 // try {
-    sequelize = dbConnect;
+sequelize = dbConnect;
 // } catch (error) {
 //     console.log("error", error.message);
 // }
@@ -43,6 +43,7 @@ Object.keys(db).forEach((modelName) => {
 
 sequelize
   .authenticate()
+  // .sync()
   .then((x) => {
     console.log("db connected!.");
   })

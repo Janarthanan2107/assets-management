@@ -3,7 +3,7 @@ extends layout
 block content
     h1 Edit Employee
 
-    // Form to edit an existing employee
+    //- Form to edit an existing employee
     form(method='post' action='/employees/edit/#{employee.id}')
         .form-group
             label(for='name') Name:

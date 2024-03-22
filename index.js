@@ -17,7 +17,6 @@ dotenv.config();
 
 // Connect to the database
 
-
 // Define a route to handle requests to the root URL ("/")
 app.get('/', (req, res) => {
     res.send('Welcome to the Asset Management System!');
