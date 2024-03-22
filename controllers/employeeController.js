@@ -5,7 +5,7 @@ const { Employee } = require('../models/index.js');
 const getEmployees = async (req, res) => {
     try {
         const employees = await Employee.findAll();
-        res.status(200).send( { employees });
+        res.status(200).send({ employees });
     } catch (error) {
         console.error(error);
         res.status(500).send('Internal Server Error');
@@ -19,7 +19,7 @@ const getEmployeeById = async (req, res) => {
         if (!employee) {
             return res.status(404).send('Employee not found');
         }
-        res.status(200).send( { employee });
+        res.status(200).send({ employee });
     } catch (error) {
         console.error(error);
         res.status(500).send('Internal Server Error');
@@ -29,7 +29,7 @@ const getEmployeeById = async (req, res) => {
 const addEmployee = async (req, res) => {
     const { name } = req.body;
     try {
-        const existingEmployee = await Employee.findOne({ where: { name } });   
+        const existingEmployee = await Employee.findOne({ where: { name } });
         if (existingEmployee) {
             return res.status(400).send('Employee already exists');
         }
