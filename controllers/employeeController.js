@@ -1,12 +1,11 @@
-// controllers/employeeController.js
-import Employee from '../models/Employee.js';
+const { Employee } = require('../models/index.js');
 
 // Controller functions for handling employee-related routes
 
 const getEmployees = async (req, res) => {
     try {
         const employees = await Employee.findAll();
-        res.render('employees', { employees });
+        res.status(200).send( { employees });
     } catch (error) {
         console.error(error);
         res.status(500).send('Internal Server Error');
@@ -20,38 +19,24 @@ const getEmployeeById = async (req, res) => {
         if (!employee) {
             return res.status(404).send('Employee not found');
         }
-        res.render('employeeDetails', { employee });
+        res.status(200).send( { employee });
     } catch (error) {
         console.error(error);
         res.status(500).send('Internal Server Error');
     }
-};
-
-const addEmployeeForm = (req, res) => {
-    res.render('addEmployee');
 };
 
 const addEmployee = async (req, res) => {
     const { name } = req.body;
     try {
-        const newEmployee = await Employee.create({ name });
-        res.redirect('/employees');
-    } catch (error) {
-        console.error(error);
-        res.status(500).send('Internal Server Error');
-    }
-};
-
-const editEmployeeForm = async (req, res) => {
-    const { id } = req.params;
-    try {
-        const employee = await Employee.findByPk(id);
-        if (!employee) {
-            return res.status(404).send('Employee not found');
+        const existingEmployee = await Employee.findOne({ where: { name } });   
+        if (existingEmployee) {
+            return res.status(400).send('Employee already exists');
         }
-        res.render('editEmployee', { employee });
+        const newEmployee = await Employee.create({ name });
+        res.status(201).send('Employee created successfully')
     } catch (error) {
-        console.error(error);
+        console.error(error.message);
         res.status(500).send('Internal Server Error');
     }
 };
@@ -65,7 +50,7 @@ const editEmployee = async (req, res) => {
             return res.status(404).send('Employee not found');
         }
         await employee.update({ name });
-        res.redirect('/employees');
+        res.status(200).send('Employee updated successfully');
     } catch (error) {
         console.error(error);
         res.status(500).send('Internal Server Error');
@@ -80,19 +65,17 @@ const deleteEmployee = async (req, res) => {
             return res.status(404).send('Employee not found');
         }
         await employee.destroy();
-        res.redirect('/employees');
+        res.status(200).send('Employee deleted successfully');
     } catch (error) {
         console.error(error);
         res.status(500).send('Internal Server Error');
     }
 };
 
-export {
+module.exports = {
     getEmployees,
     getEmployeeById,
-    addEmployeeForm,
     addEmployee,
-    editEmployeeForm,
     editEmployee,
     deleteEmployee,
 };

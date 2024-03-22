@@ -1,21 +1,12 @@
-// models/AssetCategory.js
-import { sequelizeConfig } from '../config/config.js'; // Import sequelize as a named import
-import { Model, DataTypes } from 'sequelize';
+// Employee.js
 
-class AssetCategory extends Model {
-    // Add class methods or associations here
-}
-
-AssetCategory.init({
-    name: {
-        type: DataTypes.STRING,
-        allowNull: false,
-        unique: true
-    },
-    // Define other attributes for the AssetCategory model
-}, {
-    sequelize: sequelizeConfig, // Pass sequelizeConfig as the sequelize option
-    modelName: 'AssetCategory'
-});
-
-export default AssetCategory;
+module.exports = (sequelize, DataTypes) => {
+    let AssetCategory = sequelize.define('AssetCategory', {
+        name: {
+            type: DataTypes.STRING,
+            allowNull: false
+        }
+    });
+    return AssetCategory;
+};
+// export default AssetCategory;

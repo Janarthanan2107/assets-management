@@ -1,12 +1,12 @@
 // controllers/assetCategoryController.js
-import AssetCategory from '../models/AssetCategory.js';
+const { AssetCategory } = require('../models/index.js');
 
 // Controller functions for handling asset category-related routes
 
 const getAssetCategories = async (req, res) => {
     try {
         const assetCategories = await AssetCategory.findAll();
-        res.render('assetCategories', { assetCategories });
+        res.status(200).send({ assetCategories });
     } catch (error) {
         console.error(error);
         res.status(500).send('Internal Server Error');
@@ -20,36 +20,18 @@ const getAssetCategoryById = async (req, res) => {
         if (!assetCategory) {
             return res.status(404).send('Asset category not found');
         }
-        res.render('assetCategoryDetails', { assetCategory });
+        res.status(200).send({ assetCategory });
     } catch (error) {
         console.error(error);
         res.status(500).send('Internal Server Error');
     }
-};
-
-const addAssetCategoryForm = (req, res) => {
-    res.render('addAssetCategory');
 };
 
 const addAssetCategory = async (req, res) => {
     const { name } = req.body;
     try {
         const newAssetCategory = await AssetCategory.create({ name });
-        res.redirect('/asset-categories');
-    } catch (error) {
-        console.error(error);
-        res.status(500).send('Internal Server Error');
-    }
-};
-
-const editAssetCategoryForm = async (req, res) => {
-    const { id } = req.params;
-    try {
-        const assetCategory = await AssetCategory.findByPk(id);
-        if (!assetCategory) {
-            return res.status(404).send('Asset category not found');
-        }
-        res.render('editAssetCategory', { assetCategory });
+        res.status(201).send('Asset category created successfully');
     } catch (error) {
         console.error(error);
         res.status(500).send('Internal Server Error');
@@ -65,7 +47,7 @@ const editAssetCategory = async (req, res) => {
             return res.status(404).send('Asset category not found');
         }
         await assetCategory.update({ name });
-        res.redirect('/asset-categories');
+        res.status(200).send('Asset category updated successfully');
     } catch (error) {
         console.error(error);
         res.status(500).send('Internal Server Error');
@@ -80,19 +62,17 @@ const deleteAssetCategory = async (req, res) => {
             return res.status(404).send('Asset category not found');
         }
         await assetCategory.destroy();
-        res.redirect('/asset-categories');
+        res.status(200).send('Asset category deleted successfully');
     } catch (error) {
         console.error(error);
         res.status(500).send('Internal Server Error');
     }
 };
 
-export {
+module.exports = {
     getAssetCategories,
     getAssetCategoryById,
-    addAssetCategoryForm,
     addAssetCategory,
-    editAssetCategoryForm,
     editAssetCategory,
     deleteAssetCategory,
 };

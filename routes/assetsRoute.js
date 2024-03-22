@@ -1,25 +1,20 @@
 // src/routes/assetsRoute.js
-
-import express from 'express';
-import {
+const express = require('express');
+const {
     getAssets,
     getAssetById,
-    addAssetForm,
     addAsset,
-    editAssetForm,
     editAsset,
     deleteAsset
-} from '../controllers/assetsController.js';
+} = require('../controllers/assetsController');
 
 const router = express.Router();
 
 // Asset routes
 router.get('/', getAssets);
 router.get('/:id', getAssetById);
-router.get('/add', addAssetForm);
 router.post('/add', addAsset);
-router.get('/edit/:id', editAssetForm);
-router.post('/edit/:id', editAsset);
+router.put('/edit/:id', editAsset);
 router.get('/delete/:id', deleteAsset);
 
-export default router;
+module.exports = router;

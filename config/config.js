@@ -1,6 +1,5 @@
-// config.js
-import dotenv from 'dotenv';
-import { Sequelize } from 'sequelize';
+const dotenv = require('dotenv');
+const { Sequelize } = require('sequelize');
 
 dotenv.config();
 
@@ -17,11 +16,21 @@ if (!DB_USERNAME || !DB_PASSWORD || !DB_DATABASE || !DB_HOST || !DB_PORT || !DB_
     throw new Error('Missing required environment variables for database configuration.');
 }
 
-export const sequelizeConfig = new Sequelize({
-    username: DB_USERNAME,
-    password: DB_PASSWORD,
-    database: DB_DATABASE,
+const dbConnect = new Sequelize(DB_DATABASE, DB_USERNAME, DB_PASSWORD, {
     host: DB_HOST,
-    port: DB_PORT,
-    dialect: DB_DIALECT
+    dialect: DB_DIALECT,
+    logging: false,
+    define: {
+      timestamps: false
+    },
+    pool: {
+      max: 5,
+      min: 0,
+      acquire: 30000,
+      idle: 10000
+    },
+    timezone: '+05:30'
 });
+
+
+module.exports = dbConnect;

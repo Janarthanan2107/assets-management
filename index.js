@@ -1,30 +1,22 @@
-// Import express and other required modules
-import express from 'express';
-import bodyParser from 'body-parser';
-import { Sequelize } from 'sequelize'; // Import Sequelize
-import employeeRouter from './routes/employeeRoute.js';
-import assetsRouter from './routes/assetsRoute.js';
-import assetCategoryRouter from './routes/assetCategoryRoute.js';
-import { sequelizeConfig } from './config/config.js';
-
+const express = require('express');
+const bodyParser = require('body-parser');
+const employeeRouter = require('./routes/employeeRoute');
+const assetsRouter = require('./routes/assetsRoute');
+const assetCategoryRouter = require('./routes/assetCategoryRoute');
+// const db = require('./models/index');
+const dotenv = require('dotenv');
+const cors = require('cors');
 // Create an express application
 const app = express();
-
 // Middleware to parse JSON bodies and urlencoded bodies
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
+app.use(cors())
+// Load environment variables from the .env file
+dotenv.config();
 
 // Connect to the database
-const sequelize = new Sequelize(sequelizeConfig);
 
-(async () => {
-    try {
-        await sequelize.authenticate();
-        console.log('Connection to the database has been established successfully.');
-    } catch (error) {
-        console.error('Unable to connect to the database:', error);
-    }
-})();
 
 // Define a route to handle requests to the root URL ("/")
 app.get('/', (req, res) => {
