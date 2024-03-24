@@ -34,7 +34,7 @@ const addEmployee = async (req, res) => {
             return res.status(400).send('Employee already exists');
         }
         const newEmployee = await Employee.create({ name });
-        res.status(201).send('Employee created successfully')
+        res.redirect('/employees'); // Redirect to the employees route
     } catch (error) {
         console.error(error.message);
         res.status(500).send('Internal Server Error');

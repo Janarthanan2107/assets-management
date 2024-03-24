@@ -3,23 +3,35 @@ const bodyParser = require('body-parser');
 const employeeRouter = require('./routes/employeeRoute');
 const assetsRouter = require('./routes/assetsRoute');
 const assetCategoryRouter = require('./routes/assetCategoryRoute');
-// const db = require('./models/index');
 const dotenv = require('dotenv');
 const cors = require('cors');
-// Create an express application
+const path = require('path');
+
 const app = express();
-// Middleware to parse JSON bodies and urlencoded bodies
+
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
-app.use(cors())
-// Load environment variables from the .env file
+app.use(cors());
 dotenv.config();
 
-// Connect to the database
+// Set the view engine to use Pug
+app.set('view engine', 'pug');
 
-// Define a route to handle requests to the root URL ("/")
+// Assuming employeesData is an array of employee objects
+const employeesData = [
+    { id: '', name: '' },
+];
+
 app.get('/', (req, res) => {
-    res.send('Welcome to the Asset Management System!');
+    res.render('employees', { employees: employeesData });
+});
+
+app.get('/add-employee', (req, res) => {
+    res.render('addEmployee');
+});
+
+app.get('/employees/edit/', (req, res) => {
+    res.render('editEmployee');
 });
 
 // Use employee routes
@@ -31,7 +43,6 @@ app.use('/assets', assetsRouter);
 // Use asset category routes
 app.use('/asset-categories', assetCategoryRouter);
 
-// Start the server
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
     console.log(`Server is running on port ${PORT}`);
